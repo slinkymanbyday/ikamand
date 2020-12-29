@@ -5,12 +5,12 @@ with open("README.md", "r") as fh:
     LONG = fh.read()
 setuptools.setup(
     name="ikamand",
-    version="0.1.0",
+    version="0.1.1",
     author="slinkymanbyday",
     author_email="slinkymanbyday@gmail.com",
     description="",
     long_description=LONG,
-    install_requires=['aiohttp'],
+    install_requires=['requests'],
     long_description_content_type="text/markdown",
     url="https://github.com/slinkymanbyday/ikamand",
     packages=setuptools.find_packages(),
