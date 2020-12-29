@@ -140,33 +140,33 @@ class Ikamand:
     @property
     def cooking(self):
         """Return cooking status."""
-        return self._data.get(COOK_START, 0)[0] == "1"
+        return self._data.get(COOK_START, [0])[0] == "1"
 
     @property
     def grilling(self):
         """Return cooking status."""
-        return self._data.get(GRILL_START, 0)[0] == "1"
+        return self._data.get(GRILL_START, [0])[0] == "1"
 
     @property
     def pit_temp(self):
         """Return current pit temp."""
         return (
-            int(self._data.get(PROBE_PIT, "400")[0])
-            if self._data.get(PROBE_PIT, "400")[0] not in FALSE_TEMPS
+            int(self._data.get(PROBE_PIT, ["400"])[0])
+            if self._data.get(PROBE_PIT, ["400"])[0] not in FALSE_TEMPS
             else None
         )
 
     @property
     def target_pit_temp(self):
         """Return target pit temp."""
-        return int(self._data.get(TARGET_PIT_TEMP, 0)[0])
+        return int(self._data.get(TARGET_PIT_TEMP, [0])[0])
 
     @property
     def probe_1(self):
         """Return current probe 1 temp."""
         return (
-            int(self._data.get(PROBE_1, "400")[0])
-            if self._data.get(PROBE_1, "400")[0] not in FALSE_TEMPS
+            int(self._data.get(PROBE_1, ["400"])[0])
+            if self._data.get(PROBE_1, ["400"])[0] not in FALSE_TEMPS
             else None
         )
 
@@ -174,8 +174,8 @@ class Ikamand:
     def probe_2(self):
         """Return current probe 2 temp."""
         return (
-            int(self._data.get(PROBE_2, "400")[0])
-            if self._data.get(PROBE_2, "400")[0] not in FALSE_TEMPS
+            int(self._data.get(PROBE_2, ["400"])[0])
+            if self._data.get(PROBE_2, ["400"])[0] not in FALSE_TEMPS
             else None
         )
 
@@ -183,7 +183,7 @@ class Ikamand:
     def probe_3(self):
         """Return current probe 3 temp."""
         return (
-            int(self._data.get(PROBE_3, "400")[0])
-            if self._data.get(PROBE_3, "400")[0] not in FALSE_TEMPS
+            int(self._data.get(PROBE_3, ["400"])[0])
+            if self._data.get(PROBE_3, ["400"])[0] not in FALSE_TEMPS
             else None
         )
