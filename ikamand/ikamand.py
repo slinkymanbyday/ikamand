@@ -119,7 +119,7 @@ class Ikamand:
             _LOGGER.error("Error connecting to iKamand, %s", error)
 
     def stop_grill(self):
-        """Stop iKamand Grill mode"""
+        """Stop iKamand Grill mode."""
         url = f"{self.base_url}cook"
         current_time = int(time.time())
         data = {
