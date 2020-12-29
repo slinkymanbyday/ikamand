@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     LONG = fh.read()
 setuptools.setup(
     name="ikamand",
-    version="0.1.1",
+    version="0.1.2",
     author="slinkymanbyday",
     author_email="slinkymanbyday@gmail.com",
     description="",
