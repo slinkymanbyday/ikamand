@@ -24,14 +24,15 @@ from ikamand.const import (
     GRILL_END_TIME,
     GRILL_START,
     FALSE_TEMPS,
-    FAN_SPEED
+    FAN_SPEED,
 )
 
 _LOGGER = logging.getLogger(__name__)
 HTTP_ERRORS = (
     requests.exceptions.ConnectionError,
-    requests.exceptions.HTTPError
-    )
+    requests.exceptions.HTTPError,
+)
+TIMEOUT = 5
 
 
 class Ikamand:
@@ -55,7 +56,9 @@ class Ikamand:
 
         url = f"{self.base_url}data"
         try:
-            response = self._session.get(url, headers=self.headers)
+            response = self._session.get(
+                url, headers=self.headers, timeout=TIMEOUT
+            )
             result = parse_qs(response.text)
             if response.status_code in GOOD_HTTP_CODES:
                 self._data = result
@@ -71,7 +74,7 @@ class Ikamand:
         self,
         target_pit_temp: int,
         target_food_temp: int = 0,
-        food_probe: int = 1
+        food_probe: int = 1,
     ):
         """Start iKamand Cook."""
         url = f"{self.base_url}cook"
@@ -86,7 +89,9 @@ class Ikamand:
             COOK_END_TIME: current_time + 86400,
         }
         try:
-            self._session.post(url, headers=self.headers, data=data)
+            self._session.post(
+                url, headers=self.headers, data=data, timeout=TIMEOUT
+            )
             self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
@@ -106,7 +111,9 @@ class Ikamand:
             COOK_END_TIME: 0,
         }
         try:
-            self._session.post(url, headers=self.headers, data=data)
+            self._session.post(
+                url, headers=self.headers, data=data, timeout=TIMEOUT
+            )
             self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
@@ -122,7 +129,9 @@ class Ikamand:
             CURRENT_TIME: current_time,
         }
         try:
-            self._session.post(url, headers=self.headers, data=data)
+            self._session.post(
+                url, headers=self.headers, data=data, timeout=TIMEOUT
+            )
             self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
@@ -138,7 +147,9 @@ class Ikamand:
             CURRENT_TIME: current_time,
         }
         try:
-            self._session.post(url, headers=self.headers, data=data)
+            self._session.post(
+                url, headers=self.headers, data=data, timeout=TIMEOUT
+            )
             self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
@@ -203,9 +214,7 @@ class Ikamand:
     @property
     def fan_speed(self):
         """Return current fan speed %."""
-        return (
-            int(self._data.get(FAN_SPEED, ["0"])[0])
-        )
+        return int(self._data.get(FAN_SPEED, ["0"])[0])
 
     @property
     def online(self):
