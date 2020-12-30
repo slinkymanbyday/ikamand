@@ -66,7 +66,6 @@ class Ikamand:
             else:
                 _LOGGER.error("Error, unable to get iKamand data ")
         except HTTP_ERRORS as error:
-            _LOGGER.error("Error connecting to iKamand, %s", error)
             self._online = False
         return self._data
 
