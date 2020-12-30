@@ -24,6 +24,7 @@ from ikamand.const import (
     GRILL_END_TIME,
     GRILL_START,
     FALSE_TEMPS,
+    FAN_SPEED
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ class Ikamand:
         self._session = requests.session()
         self.base_url = f"http://{ip}/cgi-bin/"
         self._data = {}
+        self._online = False
         self.headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -57,10 +59,12 @@ class Ikamand:
             result = parse_qs(response.text)
             if response.status_code in GOOD_HTTP_CODES:
                 self._data = result
+                self._online = True
             else:
                 _LOGGER.error("Error, unable to get iKamand data ")
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
+            self._online = False
         return self._data
 
     def start_cook(
@@ -83,8 +87,10 @@ class Ikamand:
         }
         try:
             self._session.post(url, headers=self.headers, data=data)
+            self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
+            self._online = False
 
     def stop_cook(self):
         """Stop iKamand Cook."""
@@ -101,8 +107,10 @@ class Ikamand:
         }
         try:
             self._session.post(url, headers=self.headers, data=data)
+            self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
+            self._online = False
 
     def start_grill(self):
         """Start iKamand Grill mode (10 minutes full speed)."""
@@ -115,8 +123,10 @@ class Ikamand:
         }
         try:
             self._session.post(url, headers=self.headers, data=data)
+            self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
+            self._online = False
 
     def stop_grill(self):
         """Stop iKamand Grill mode."""
@@ -129,8 +139,10 @@ class Ikamand:
         }
         try:
             self._session.post(url, headers=self.headers, data=data)
+            self._online = True
         except HTTP_ERRORS as error:
             _LOGGER.error("Error connecting to iKamand, %s", error)
+            self._online = False
 
     @property
     def data(self):
@@ -187,3 +199,16 @@ class Ikamand:
             if self._data.get(PROBE_3, ["400"])[0] not in FALSE_TEMPS
             else None
         )
+
+    @property
+    def fan_speed(self):
+        """Return current fan speed %."""
+        return (
+            int(self._data.get(FAN_SPEED, ["0"])[0])
+        )
+
+    @property
+    def online(self):
+        """Return if reachable."""
+        return self._online
+
