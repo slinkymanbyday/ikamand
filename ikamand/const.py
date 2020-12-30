@@ -14,6 +14,7 @@ CURRENT_TIME = "ct"
 COOK_END_TIME = "sce"
 COOK_ID = "csid"
 GRILL_END_TIME = "sge"
+UNKOWN_VAR = "as"
 
 
 # receiving parameters

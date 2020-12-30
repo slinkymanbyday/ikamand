@@ -25,6 +25,7 @@ from ikamand.const import (
     GRILL_START,
     FALSE_TEMPS,
     FAN_SPEED,
+    UNKOWN_VAR
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -34,6 +35,9 @@ HTTP_ERRORS = (
 )
 TIMEOUT = 5
 
+proxies = {
+    "http": "http://127.0.0.1:8080"
+}
 
 class Ikamand:
     """A class for the iKamand API."""
@@ -73,7 +77,7 @@ class Ikamand:
         self,
         target_pit_temp: int,
         target_food_temp: int = 0,
-        food_probe: int = 1,
+        food_probe: int = 0,
     ):
         """Start iKamand Cook."""
         url = f"{self.base_url}cook"
@@ -82,14 +86,15 @@ class Ikamand:
             COOK_START: 1,
             COOK_ID: "",
             TARGET_PIT_TEMP: target_pit_temp,
-            TARGET_FOOD_TEMP: target_food_temp,
-            FOOD_PROBE: food_probe,
-            CURRENT_TIME: current_time,
             COOK_END_TIME: current_time + 86400,
+            FOOD_PROBE: food_probe,
+            TARGET_FOOD_TEMP: target_food_temp,
+            UNKOWN_VAR: 0,
+            CURRENT_TIME: current_time,
         }
         try:
             self._session.post(
-                url, headers=self.headers, data=data, timeout=TIMEOUT
+                url, headers=self.headers, data=data, timeout=TIMEOUT, proxies=proxies
             )
             self._online = True
         except HTTP_ERRORS as error:
@@ -107,7 +112,7 @@ class Ikamand:
             TARGET_FOOD_TEMP: 0,
             FOOD_PROBE: 0,
             CURRENT_TIME: current_time,
-            COOK_END_TIME: 0,
+            COOK_END_TIME: 0
         }
         try:
             self._session.post(
