@@ -35,9 +35,6 @@ HTTP_ERRORS = (
 )
 TIMEOUT = 5
 
-proxies = {
-    "http": "http://127.0.0.1:8080"
-}
 
 class Ikamand:
     """A class for the iKamand API."""
@@ -69,7 +66,7 @@ class Ikamand:
                 self._online = True
             else:
                 _LOGGER.error("Error, unable to get iKamand data ")
-        except HTTP_ERRORS as error:
+        except HTTP_ERRORS:
             self._online = False
         return self._data
 
@@ -94,7 +91,7 @@ class Ikamand:
         }
         try:
             self._session.post(
-                url, headers=self.headers, data=data, timeout=TIMEOUT, proxies=proxies
+                url, headers=self.headers, data=data, timeout=TIMEOUT
             )
             self._online = True
         except HTTP_ERRORS as error:
