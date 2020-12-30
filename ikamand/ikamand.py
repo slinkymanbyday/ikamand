@@ -211,4 +211,3 @@ class Ikamand:
     def online(self):
         """Return if reachable."""
         return self._online
-
