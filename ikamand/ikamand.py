@@ -67,9 +67,13 @@ class Ikamand:
             WIFI_USER: username,
             WIFI_PASS: password
         }
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "User-Agent": "ikamand"
+        }
         try:
             self._session.post(
-                url, headers=self.headers, data=data, timeout=TIMEOUT
+                url, headers=headers, data=data, timeout=TIMEOUT
             )
             _LOGGER.info("Network set, you will now need to connect to the same network and use the new iKamand IP address.")
         except HTTP_ERRORS as error:
