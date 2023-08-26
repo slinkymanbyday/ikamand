@@ -12,6 +12,8 @@ pip install ikamand
 
 Look at the file `example.py` for a usage example.
 
+Setting network details is untested, but should work for you if you are currently unable to connect. 
+
 [travis_status]: https://travis-ci.org/slinkymanbyday/ikamand.svg?branch=master
 [travis]: https://travis-ci.org/slinkymanbyday/ikamand
 [pypi]:https://pypi.org/project/ikamand/

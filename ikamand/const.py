@@ -8,6 +8,11 @@ TARGET_FOOD_TEMP = "tft"
 TARGET_PIT_TEMP = "tpt"
 GRILL_START = "ag"
 
+# network_parameters
+WIFI_SSID = "ssid"
+WIFI_PASS = "pass"
+WIFI_USER = "user"
+
 # sending parameters
 FOOD_PROBE = "p"
 CURRENT_TIME = "ct"

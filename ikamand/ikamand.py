@@ -25,7 +25,10 @@ from ikamand.const import (
     GRILL_START,
     FALSE_TEMPS,
     FAN_SPEED,
-    UNKOWN_VAR
+    UNKOWN_VAR,
+    WIFI_SSID,
+    WIFI_PASS,
+    WIFI_USER
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -44,12 +47,53 @@ class Ikamand:
         self._session = requests.session()
         self.base_url = f"http://{ip}/cgi-bin/"
         self._data = {}
+        self._network = {}
         self._online = False
         self.headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
             "User-Agent": "ikamand",
         }
+        
+    def set_network(self,
+                    ssid: str,
+                    username: str,
+                    password: str):
+        """Set SSID details, untested by author"""
+        
+        url = f"{self.base_url}netset"
+        data = {
+            WIFI_SSID: ssid,
+            WIFI_USER: username,
+            WIFI_PASS: password
+        }
+        try:
+            self._session.post(
+                url, headers=self.headers, data=data, timeout=TIMEOUT
+            )
+            _LOGGER.info("Network set, you will now need to connect to the same network and use the new iKamand IP address.")
+        except HTTP_ERRORS as error:
+            _LOGGER.error("Error connecting to iKamand, %s", error)
+            
+    def get_network(self):
+        """Return network details"""
+        
+        url = f"{self.base_url}wifi_list"
+        try:
+            response = self._session.get(
+                url, headers=self.headers, timeout=TIMEOUT
+            )
+            print(response)
+            result = parse_qs(response.text)
+            if response.status_code in GOOD_HTTP_CODES:
+                self._network = result
+            else:
+                _LOGGER.error("Error, unable to get iKamand network data ")
+        except HTTP_ERRORS as error:
+            _LOGGER.error("Error connecting to iKamand, %s", error)
+
+        return self._network
+
 
     def get_data(self):
         """Get grill information."""

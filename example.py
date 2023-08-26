@@ -8,6 +8,10 @@ def example():
     ikamand = Ikamand("10.0.0.48")
     data = ikamand.get_data()
     print("Data:", data)
+def example_set_network():
+    """Set new iKamand network - untested."""
+    ikamand = Ikamand("10.1.1.17")
+    ikamand.set_network(ssid="MySSID", username="WIFI_USER", password="hunter2")
 
 
 def start_stop_cook():
